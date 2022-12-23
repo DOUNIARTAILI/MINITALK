@@ -6,7 +6,7 @@
 /*   By: drtaili <drtaili@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 03:17:19 by drtaili           #+#    #+#             */
-/*   Updated: 2022/12/22 05:59:00 by drtaili          ###   ########.fr       */
+/*   Updated: 2022/12/23 01:46:16 by drtaili          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ void send(char *str, int pip)
 int main(int argc, char *argv[])
 {
     int res;
-    while(argc == 3)
+    if (argc == 3)
     {
-        while (argv[1] >= 0)
+        if (argv[1] >= 0)
         {
             send(argv[2], argv[1]);
         }
