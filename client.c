@@ -6,7 +6,7 @@
 /*   By: drtaili <drtaili@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 03:17:19 by drtaili           #+#    #+#             */
-/*   Updated: 2022/12/22 05:41:19 by drtaili          ###   ########.fr       */
+/*   Updated: 2022/12/22 05:59:00 by drtaili          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,16 @@ void send(char *str, int pip)
     while(str != NULL)
     {
         c = 7;
-        while(c > 0)
+        while(c >= 0)
         {
             res = 0;
-            str[i] >> c;
-            res = (str[i] >> c) && 1;
+            res = (str[i] >> c) & 1;
             if (res == 0)
                 kill(pip, SIGUSR2);
             else if (res == 1)
                 kill(pip, SIGUSR1);
             c--;
+            usleep(200);
         }
         i++;
     }
@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
     {
         while (argv[1] >= 0)
         {
-            function(argv[2], argv[1]);
+            send(argv[2], argv[1]);
         }
     } 
 }
