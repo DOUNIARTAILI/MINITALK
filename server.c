@@ -6,14 +6,12 @@
 /*   By: drtaili <drtaili@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 05:59:59 by drtaili           #+#    #+#             */
-/*   Updated: 2022/12/23 02:45:36 by drtaili          ###   ########.fr       */
+/*   Updated: 2022/12/24 04:58:29 by drtaili          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <signal.h>
-#include <unistd.h>
-#include <stdlib.h>
+#include "minitalk.h"
+
 
 int	ft_strlenint(long n)
 {
@@ -57,16 +55,16 @@ char	*ft_itoa(int n)
 	}
 	return (a);
 }
-void    handler(int signum)
+void    handler(int signum, siginfo_t *info, void *context)
 {
     static int  cpt;
     static char ch;
     ch = 0;
     cpt = 0;
     if (signum == SIGUSR1)
-        ch = (ch << 1) | 1;
+        ch = ch << 1 | 1;
     else if(signum == SIGUSR2)
-        ch = (ch << 1) | 0; 
+        ch = ch << 1 | 0; 
     cpt++;
     if (cpt == 8)
     {
@@ -79,12 +77,13 @@ void    handler(int signum)
 int main()
 {
     struct sigaction sa;
-    sa.sa_handler = handler;
+    sa.sa_sigaction = &handler;
     sigaction(SIGUSR1, &sa, NULL);
     sigaction(SIGUSR2, &sa, NULL);
     write(1, ft_itoa(getpid()), ft_strlenint(getpid()));
     while (1)
     {
-        wait(NULL);
+        pause();
     }
+    return (0);
 }

@@ -6,12 +6,11 @@
 /*   By: drtaili <drtaili@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 03:17:19 by drtaili           #+#    #+#             */
-/*   Updated: 2022/12/23 02:10:38 by drtaili          ###   ########.fr       */
+/*   Updated: 2022/12/24 05:06:35 by drtaili          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <signal.h>
+#include "minitalk.h"
 
 // main.c 4322 "je suis client" j = 10001110 
 //                                  1          j >> 7 => 0000000|1| && 1 = 1 sigusr1
@@ -47,33 +46,30 @@ void send(char *str, int pip)
 {
     int i;
     int c;
-    int res;
     i = 0;
-    while(str != NULL)
+    while(str[i])
     {
         c = 7;
         while(c >= 0)
         {
-            res = 0;
-            res = (str[i] >> c) & 1;
-            if (res == 0)
+            if ((str[i] >> c & 1) == 0)
                 kill(pip, SIGUSR2);
-            else if (res == 1)
+            else if ((str[i] >> c & 1) == 1)
                 kill(pip, SIGUSR1);
             c--;
-            usleep(200);
+            usleep(800);
         }
         i++;
     }
 }
 int main(int argc, char *argv[])
 {
-    int res;
     if (argc == 3)
     {
         if (ft_atoi(argv[1]) >= 0)
         {
-            send(argv[2], argv[1]);
+            send(argv[2], ft_atoi(argv[1]));
         }
-    } 
+    }
+    return (0);
 }
