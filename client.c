@@ -6,7 +6,7 @@
 /*   By: drtaili <drtaili@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 03:17:19 by drtaili           #+#    #+#             */
-/*   Updated: 2022/12/24 05:06:35 by drtaili          ###   ########.fr       */
+/*   Updated: 2022/12/24 06:18:12 by drtaili          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	ft_atoi(const char *str)
 	return (r * s);
 }
 
-void send(char *str, int pip)
+void send(int pip, char *str)
 {
     int i;
     int c;
@@ -64,11 +64,13 @@ void send(char *str, int pip)
 }
 int main(int argc, char *argv[])
 {
+    int pip;
     if (argc == 3)
     {
-        if (ft_atoi(argv[1]) >= 0)
+        pip = ft_atoi(argv[1]);
+        if (pip >= 0)
         {
-            send(argv[2], ft_atoi(argv[1]));
+            send(pip, argv[2]);
         }
     }
     return (0);

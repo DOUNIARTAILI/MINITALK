@@ -6,7 +6,7 @@
 /*   By: drtaili <drtaili@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 05:59:59 by drtaili           #+#    #+#             */
-/*   Updated: 2022/12/24 04:58:29 by drtaili          ###   ########.fr       */
+/*   Updated: 2022/12/24 07:23:44 by drtaili          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,20 @@ char	*ft_itoa(int n)
 	}
 	return (a);
 }
+void init_handler(char ch, int cpt)
+{
+	ch = 0;
+	cpt = 0;
+}
+
 void    handler(int signum, siginfo_t *info, void *context)
 {
-    static int  cpt;
+    static int cpt;
+	(void)context;
+	(void)info;
     static char ch;
-    ch = 0;
-    cpt = 0;
+	if(signum == SIGSTOP)
+			init_handler(ch, cpt);
     if (signum == SIGUSR1)
         ch = ch << 1 | 1;
     else if(signum == SIGUSR2)
@@ -74,13 +82,18 @@ void    handler(int signum, siginfo_t *info, void *context)
     }
 }
 
+
 int main()
 {
     struct sigaction sa;
     sa.sa_sigaction = &handler;
+	sa.sa_flags = SA_SIGINFO;
+	sa.sa_flags = SA_RESTART;
     sigaction(SIGUSR1, &sa, NULL);
     sigaction(SIGUSR2, &sa, NULL);
+	sigaction(SIGTSTP, &sa, NULL);
     write(1, ft_itoa(getpid()), ft_strlenint(getpid()));
+	write(1, "\n", 1);
     while (1)
     {
         pause();
