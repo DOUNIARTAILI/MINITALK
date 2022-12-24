@@ -6,7 +6,7 @@
 /*   By: drtaili <drtaili@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 03:17:19 by drtaili           #+#    #+#             */
-/*   Updated: 2022/12/24 06:18:12 by drtaili          ###   ########.fr       */
+/*   Updated: 2022/12/24 07:59:58 by drtaili          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
     if (argc == 3)
     {
         pip = ft_atoi(argv[1]);
-        if (pip >= 0)
+        if (pip > 0)
         {
             send(pip, argv[2]);
         }

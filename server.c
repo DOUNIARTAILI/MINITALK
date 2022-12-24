@@ -6,7 +6,7 @@
 /*   By: drtaili <drtaili@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 05:59:59 by drtaili           #+#    #+#             */
-/*   Updated: 2022/12/24 07:23:44 by drtaili          ###   ########.fr       */
+/*   Updated: 2022/12/24 08:14:41 by drtaili          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,20 +55,20 @@ char	*ft_itoa(int n)
 	}
 	return (a);
 }
-void init_handler(char ch, int cpt)
-{
-	ch = 0;
-	cpt = 0;
-}
 
 void    handler(int signum, siginfo_t *info, void *context)
 {
     static int cpt;
-	(void)context;
-	(void)info;
     static char ch;
-	if(signum == SIGSTOP)
-			init_handler(ch, cpt);
+	static pid_t pip;
+
+	(void)context;
+	if (pip != info->si_pid && info->si_pid != -1)
+	{
+		ch = 0;
+		cpt = 0;
+		pip = info->si_pid;
+	}
     if (signum == SIGUSR1)
         ch = ch << 1 | 1;
     else if(signum == SIGUSR2)
