@@ -6,7 +6,7 @@
 /*   By: drtaili <drtaili@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 05:59:59 by drtaili           #+#    #+#             */
-/*   Updated: 2022/12/25 03:39:29 by drtaili          ###   ########.fr       */
+/*   Updated: 2022/12/25 06:55:21 by drtaili          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ void	ft_putnbr(int n)
 	}
 }
 
-void    handler(int signum, siginfo_t *info, void *context)
+void	handler(int signum, siginfo_t *info, void *context)
 {
-    static int cpt;
-    static char ch;
-	static pid_t pip;
+	static int		cpt;
+	static char		ch;
+	static pid_t	pip;
 
 	(void)context;
 	if (pip != info->si_pid && info->si_pid != -1)
@@ -49,33 +49,32 @@ void    handler(int signum, siginfo_t *info, void *context)
 		cpt = 0;
 		pip = info->si_pid;
 	}
-    if (signum == SIGUSR1)
-        ch = ch << 1 | 1;
-    else if(signum == SIGUSR2)
-        ch = ch << 1 | 0; 
-    cpt++;
-    if (cpt == 8)
-    {
-        write(1, &ch, 1);
-        ch = 0;
-        cpt = 0;
-    }
+	if (signum == SIGUSR1)
+		ch = ch << 1 | 1;
+	else if (signum == SIGUSR2)
+		ch = ch << 1 | 0;
+	cpt++;
+	if (cpt == 8)
+	{
+		write(1, &ch, 1);
+		ch = 0;
+		cpt = 0;
+	}
 }
 
-int main()
+int	main(void)
 {
-    struct sigaction sa;
-    sa.sa_sigaction = &handler;
+	struct sigaction	sa;
+
+	sa.sa_sigaction = &handler;
 	sa.sa_flags = SA_SIGINFO;
-	sa.sa_flags = SA_RESTART;
-    sigaction(SIGUSR1, &sa, NULL);
-    sigaction(SIGUSR2, &sa, NULL);
-	sigaction(SIGTSTP, &sa, NULL);
+	sigaction(SIGUSR1, &sa, NULL);
+	sigaction(SIGUSR2, &sa, NULL);
 	ft_putnbr(getpid());
 	write(1, "\n", 1);
-    while (1)
-    {
-        pause();
-    }
-    return (0);
+	while (1)
+	{
+		pause();
+	}
+	return (0);
 }

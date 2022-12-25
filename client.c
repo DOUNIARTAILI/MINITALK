@@ -6,16 +6,12 @@
 /*   By: drtaili <drtaili@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 03:17:19 by drtaili           #+#    #+#             */
-/*   Updated: 2022/12/24 07:59:58 by drtaili          ###   ########.fr       */
+/*   Updated: 2022/12/25 06:00:23 by drtaili          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-// main.c 4322 "je suis client" j = 10001110 
-//                                  1          j >> 7 => 0000000|1| && 1 = 1 sigusr1
-//                                   0         j >> 6 => 0000000|0| && 1 = 0 sigusr2
-//                                    0        j >> 5 => 0000000|0| && 1 = 0 sigusr2
 int	ft_atoi(const char *str)
 {
 	int	r;
@@ -42,36 +38,39 @@ int	ft_atoi(const char *str)
 	return (r * s);
 }
 
-void send(int pip, char *str)
+void	send(int pip, char *str)
 {
-    int i;
-    int c;
-    i = 0;
-    while(str[i])
-    {
-        c = 7;
-        while(c >= 0)
-        {
-            if ((str[i] >> c & 1) == 0)
-                kill(pip, SIGUSR2);
-            else if ((str[i] >> c & 1) == 1)
-                kill(pip, SIGUSR1);
-            c--;
-            usleep(800);
-        }
-        i++;
-    }
+	int	i;
+	int	c;
+
+	i = 0;
+	while (str[i])
+	{
+		c = 7;
+		while (c >= 0)
+		{
+			if ((str[i] >> c & 1) == 0)
+				kill(pip, SIGUSR2);
+			else if ((str[i] >> c & 1) == 1)
+				kill(pip, SIGUSR1);
+			c--;
+			usleep(800);
+		}
+		i++;
+	}
 }
-int main(int argc, char *argv[])
+
+int	main(int argc, char *argv[])
 {
-    int pip;
-    if (argc == 3)
-    {
-        pip = ft_atoi(argv[1]);
-        if (pip > 0)
-        {
-            send(pip, argv[2]);
-        }
-    }
-    return (0);
+	int	pip;
+
+	if (argc == 3)
+	{
+		pip = ft_atoi(argv[1]);
+		if (pip > 0)
+		{
+			send(pip, argv[2]);
+		}
+	}
+	return (0);
 }
